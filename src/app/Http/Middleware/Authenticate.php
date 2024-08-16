@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Str;
 
 class Authenticate extends Middleware
 {
@@ -15,6 +16,15 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
+
+            $uri = $request->path();
+
+            if(Str::startsWith($uri, ['admin'])) {
+
+                return 'admin/login_form';
+
+            }
+
             return route('login');
         }
     }
