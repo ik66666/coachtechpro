@@ -48,7 +48,7 @@
         <div class="comment__list">
             @foreach($comments as $comment)
                 <div class="comment__list-item">
-                    <span class="comment__user">{{ $comment->user->name}}</span>
+                    <span class="comment__user">{{ $comment->users_id}}</span>
                     <div class="comment-detail">
                         {{$comment->comment}}
                     </div>

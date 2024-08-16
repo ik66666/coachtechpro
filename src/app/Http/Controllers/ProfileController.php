@@ -25,8 +25,9 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $userId = Auth::id();
+        $profile = Profile::where('users_id',Auth::id())->first();
         $items = SoldItem::with('user','item')->where('users_id',$userId)->orderBy('id', 'DESC')->paginate(5);;
-        return view('buy-item',compact('items','user'));
+        return view('buy-item',compact('items','user','profile'));
     }
 
     public function profile()
