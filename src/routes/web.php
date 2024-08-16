@@ -7,7 +7,9 @@ use App\Http\Controllers\SellController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\BuyController;
 use App\Http\Controllers\Auth\AuthController;
+//use App\Http\Controllers\RegisterController;
 
+//Route::post('register',[RegisterController::class,'store']);
 
 //Route::middleware('auth')->group(function ()
 
@@ -55,11 +57,13 @@ Route::get('/cart/checkout',[Buycontroller::class, 'checkout'])->name('cart.chec
 
 
 Route::group(['middleware' => ['guest:admin']], function () {
-    Route::get('admin/login_form', [AuthController::class, 'showLogin'])->name('admin.showLogin');
-    Route::post('admin/login_form', [AuthController::class, 'login'])->name('admin.login');
+Route::get('admin/login_form', [AuthController::class, 'showLogin'])->name('admin.showLogin');
+Route::post('admin/login_form', [AuthController::class, 'login'])->name('admin.login');
 });
-
 Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin', [AuthController::class, 'index'])->name('admin.index');
     Route::get('admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
+    Route::get('admin/{user}',[AuthController::class, 'showComment']);
+    Route::delete('admin/delete/{user}',[AuthController::class, 'deleteUser']);
+    Route::delete('comment/delete/{comment}',[AuthController::class, 'deleteComment']);
 });
