@@ -14,12 +14,18 @@
         <div class="profile__image">
             <span class="avatar-form image-picker">
                 <label for="avatar" class="profile__image-item">
+                    @isset($profile->image_url)
                     <img src="{{ asset('storage/images/' . $profile->image_url) }}" class="image__item" style="object-fit: cover; width: 150px; height: 150px;">
+                    @endisset
                 </label>
             </span>
         </div>
         <div class="profile__user">
-            <span class="profile__user-name">{{ $profile->name }}</span>
+            <span class="profile__user-name">@if(!$profile->name){{ $profile->name }} 
+                @else
+                ユーザー名
+                @endif
+            </span>
         </div>
         <div class="profile__edit">
             <button class="profile__edit-button">

@@ -1,95 +1,59 @@
-
-   
 <?php
 
-namespace App\Http\Controllers\Admin;
-
+namespace App\Http\Controllers\Auth;
+use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+use App\Models\Comment;
 
-class LoginController extends Controller
+
+class AuthController extends Controller
 {
-    use AuthorizesRequests,
-        DispatchesJobs,
-        ValidatesRequests,
-        AuthenticatesUsers;
+    public function showLogin() {
 
-    protected $maxAttempts  = 50;   // ログイン試行回数（回）
-    protected $decayMinutes = 0;   // ログインロックタイム（分）
-    protected $redirectTo   = '/admin/schedule/'; //ログイン後に表示する画面
+        return view('admin/login_form');
 
-
-    /**
-     * 認証を無効にする画面を設定
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:admin')->except(['index', 'login']);
     }
 
-    /**
-     * 使用する認証を設定
-     *
-     * @return void
-     */
-    protected function guard()
-    {
-        return Auth::guard('admin');
-    }
+    public function login(AdminRequest $request) {
 
-    /**
-     * ログインIDを指定のカラムに変更する
-     * （初期値はemail）
-     *
-     * @return void
-     */
-    public function username()
-    {
-        return 'email';
-    }
+        $credentials = $request->only(['email', 'password']);
 
-    /**
-     * ログイン画面表示
-     * @return view
-     */
-    public function index()
-    {
-        return view('admin.index');
-    }
+        if(\Auth::guard('admin')->attempt($credentials)) {
 
-    /**
-     * 認証の条件を設定
-     * ログインID、パスワード、ユーザータイプ、削除日
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function attemptLogin(Request $request)
-    {
-        return $this->guard()->attempt([
-            'mail' => $request->input('email'),
-            'password' => $request->input('password'),
-            'type' => config('const.user.authority.administrator'),
-            'status' => config('const.user.status.on'),
-            'deleted_at' => null,
+            return redirect('/admin'); 
+
+        }
+
+        return back()->withErrors([
+            'auth' => ['認証に失敗しました']
         ]);
     }
 
-    /**
-     * ログアウト
-     * @return redirect
-     */
-    public function logout()
+    public function index()
     {
-        User::flushEventListeners();
-        $this->guard('admin')->logout();
-        return redirect()->to('/admin/login_form');
+        $users = User::all();
+        return view('admin/admin',compact('users'));
+    }
+
+    public function showComment($user)
+    {
+        $comments = Comment::with('item')->where('users_id',$user)->orderBy('id', 'DESC')->paginate('15');
+        return view('admin/user_comment',compact('comments'));
+    }
+
+    public function deleteUser($user)
+    {
+        User::where('id',$user)->delete();
+        
+        return redirect('/admin');
+    }
+
+    public function deleteComment($comment)
+    {
+        Comment::where('id',$comment)->delete();
+        
+        return redirect()->back();
     }
 }
