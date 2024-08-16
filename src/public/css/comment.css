@@ -1,0 +1,113 @@
+.comment__content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.item__image {
+    width: 451px;
+    height: 548px;
+    margin-top: 100px;
+    margin-left: 15%;
+    border: solid 1px rgb(199, 199, 199);
+    border-radius: 1px;
+}
+
+.item__image-file {
+    width: 451px;
+    height: 548px;
+}
+
+.item__detail {
+    width: 40%;
+    margin-left: 15%;
+    margin-top: 100px;
+}
+
+.item__name {
+    width: 326px;
+}
+
+.item__name-value {
+    height: 66px;
+    font-size: 25px;
+}
+
+.item__price {
+    width: 265px;
+    margin: 15px 0;
+    text-align: left;
+    font-size: 20px;
+}
+
+.item__price-value {
+    height: 45px;
+}
+
+.item__like {
+    display: flex;
+    flex-direction: row;
+    margin: 15px 0;
+}
+
+.item__comment {
+    margin-left: 25px;
+}
+
+.comment__image {
+    width: 40px;
+    height: 40px;
+}
+
+.like__button {
+    width: 40px;
+    height: 40px;
+}
+
+.comment__button {
+    width: 40px;
+    height: 40px;
+}
+
+.comment__list{
+    margin-top: 30px;
+}
+
+.comment__detail{
+    width: 60%;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.comment__field{
+    width: 60%;
+    margin-top: 30px;
+
+}
+
+.comment__form{
+    display: flex;
+    flex-direction: column;
+}
+
+.comment__form-item{
+    height: 155px;
+    margin-bottom: 20px;
+}
+
+.form__button-btn{
+    width: 60%;
+    height: 60px;
+    background-color: rgb(230, 64, 64);
+    border: solid 0.5px;
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.error__message{
+    color: rgb(245, 18, 18);
+    margin-top: 10px;
+    font-weight: bold;
+}
