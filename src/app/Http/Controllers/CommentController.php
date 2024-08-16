@@ -33,6 +33,6 @@ class CommentController extends Controller
             'comment' => $comment,
         ]);
 
-        return redirect()->route('item.comment',[$request->item_id]);
+        return redirect()->route('item.comment',[$request->input('item_id')]);
     }
 }

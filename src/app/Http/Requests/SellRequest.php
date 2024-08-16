@@ -44,9 +44,9 @@ class SellRequest extends FormRequest
         'description.required' => '商品説明を入力してください',
         'description.string' => '商品説明は文字列型で入力してください',
         'description.max' => '商品説明は500文字以下で入力してください',
-        'image_url.required' => '画像を選択してください'
-        'image_url.image' => '画像形式で入力してください'
-        'image_url.mimes' => '画像はjpeg,png,jpgのいずれかのファイルのみ選択可能です'
+        'image_url.required' => '画像を選択してください',
+        'image_url.image' => '画像形式で入力してください',
+        'image_url.mimes' => '画像はjpeg,png,jpgのいずれかのファイルのみ選択可能です',
         ];
     }
 }
