@@ -63,7 +63,8 @@ svg.w-5.h-5 {
     .item__raw {
         width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .item__card {

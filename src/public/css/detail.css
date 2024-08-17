@@ -9,13 +9,13 @@
     height: 548px;
     margin-top: 100px;
     margin-left: 15%;
-    border: solid 1px rgb(199, 199, 199);
-    border-radius: 1px;
 }
 
 .item__image-file{
     width: 451px;
     height: 548px;
+    border: solid 1px rgb(199, 199, 199);
+    border-radius: 1px;
 }
 
 .item__detail{
@@ -134,4 +134,117 @@
 .item__condition-title{
     margin-right: 20px;
     font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+    .detail__content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item__image {
+        width: 100%;
+        height: 300px;
+        margin-top: 100px;
+        text-align: center;
+        margin-left: 0;
+    }
+
+    .item__image-file {
+        width: 300px;
+        height: 300px;
+        border: solid 1px rgb(199, 199, 199);
+        border-radius: 1px;
+    }
+
+    .item__detail {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 40px;
+        border-top: solid 2px rgb(201, 201, 201);
+    }
+
+    .item__name {
+        width: 300px;
+    }
+
+    .item__name-value {
+        height: 66px;
+        font-size: 25px;
+    }
+
+    .item__price {
+        width: 265px;
+        margin: 15px 0;
+        text-align: left;
+        font-size: 20px;
+    }
+
+    .item__price-value {
+        height: 45px;
+    }
+
+    .item__like {
+        display: flex;
+        flex-direction: row;
+        margin: 15px 0;
+    }
+
+
+    .comment__image {
+        width: 40px;
+        height: 40px;
+    }
+
+    .like__button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .comment__button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .item__buy {
+        width: 100%;
+    }
+
+    .item__buy-button {
+        width: 100%;
+        height: 60px;
+        font-size: 30px;
+        background-color: rgb(230, 64, 64);
+        align-items: center;
+        border: solid 1px;
+        border-radius: 5px;
+        margin: 15px 0;
+    }
+
+    .item__buy-link {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        color: white;
+        font-size: 20px;
+        text-decoration: none;
+        border-bottom: solid 2px rgb(201, 201, 201);
+    }
+
+    .item__description-title {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .item__description {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 15px;
+    }
+
+    .item__info{
+        border-top: solid 2px rgb(201, 201, 201);
+    }
+
 }
