@@ -20,6 +20,11 @@
     </header>
     <main>
         <div class="admin__content">
+            @if (session('flash_message'))
+            <div class="flash_message">
+                {{ session('flash_message') }}
+            </div>
+            @endif
             <div class="admin__header">
                 <h2 class="admin__header-title">管理画面</h2>
             </div>
@@ -30,6 +35,7 @@
                         <th class="user__list-header-title">email</th>
                         <th class="user__list-header-title">コメント</th>
                         <th class="user__list-header-title"></th>
+                        <th class="user__list-header-title"></th>
                     </div>
                     @foreach($users as $user)
                         <div class="user__list-item">
@@ -38,6 +44,12 @@
                                 <td class="item__detail">{{ $user->email}}</td>
                                 <td class="item__detail">
                                     <a href="/admin/{{ $user->id }}" class="item__detail-a">コメント一覧</a>
+                                </td>
+                                <td class="item__detail">
+                                    <form action="/email/{{ $user->id}}" method="post" class="form">
+                                        @csrf
+                                        <button type="submit" class="user__delete-button">メール送信</button>
+                                    </form>
                                 </td>
                                 <td class="item__detail">
                                     <form action="/admin/delete/{{ $user->id }}" method="post" class="form">
