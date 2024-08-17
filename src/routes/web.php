@@ -66,4 +66,5 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/{user}',[AuthController::class, 'showComment']);
     Route::delete('admin/delete/{user}',[AuthController::class, 'deleteUser']);
     Route::delete('comment/delete/{comment}',[AuthController::class, 'deleteComment']);
+    Route::post('email/{user}',[AuthController::class,'sendEmail']);
 });

@@ -6,6 +6,8 @@ use App\Http\Requests\AdminRequest;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminEmail;
 
 
 class AuthController extends Controller
@@ -53,7 +55,25 @@ class AuthController extends Controller
     public function deleteComment($comment)
     {
         Comment::where('id',$comment)->delete();
-        
+
         return redirect()->back();
+    }
+
+    public function sendEmail(User $user)
+    {
+        $email = new AdminEmail();
+
+        $users = new User();
+        $user_email = $users->email;
+
+        Mail::to($user_email)->send($email);
+
+        if (count(Mail::failures()) > 0) {
+			return back()->with('flash_message', 'メール送信に失敗しました');
+        }
+        else{
+			return redirect()->route('admin.index')->with('flash_message', 'メール送信しました');
+        }
+
     }
 }
