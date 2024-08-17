@@ -68,3 +68,16 @@ header{
     cursor: pointer;
 }
 
+@media screen and (max-width: 768px) {
+    header {
+        max-width: 100%;
+        height: 100px;
+        background-color: black;
+    }
+
+    .header__logo-image{
+        width: 300px;
+    }
+    
+}
+
