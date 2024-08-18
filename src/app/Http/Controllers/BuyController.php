@@ -23,11 +23,11 @@ class BuyController extends Controller
         return view('buy',compact('items','profile'));
     }
 
-    public function buyItem(Request $request)
+    public function buyItem($item)
     {
-        $itemId = $request->input('item_id');
-        $userId = $request->input('users_id');
-        $items = Item::orderBy('id', 'DESC')->paginate(5);
+        $itemId = $item;
+        $userId = Auth::id();
+        $items = Item::orderBy('id', 'DESC')->paginate(15);
 
         SoldItem::create([
             'users_id' => $userId,
@@ -54,28 +54,17 @@ class BuyController extends Controller
     }
 
 
-    public function payment(Request $request)
+    public function charge(Request $request)
     {
-    try
-    {
-    Stripe::setApiKey(env("STRIPE_SECRET"));
+        Stripe::setApiKey(env('STRIPE_SECRET'));//シークレットキー
+ 
+        $charge = Charge::create(array(
+             'amount' => $request->input('price'),
+             'currency' => 'jpy',
+             'source'=> request()->stripeToken,
+         ));
 
-    $customer = Customer::create(array(
-    "email" => $request->stripeEmail,
-    "source" => $request->stripeToken
-    ));
-
-    $charge = Charge::create(array(
-    "customer" => $customer->id,
-    "amount" => 2000,
-    "currency" => "jpy"
-    ));
-
-    return redirect()->route("complete");
-    }
-    catch(Exception $e)
-    {
-    return $e->getMessage();
-    }
+         $item = $request->input('item_id');
+       return $this->buyItem($item);
     }
 }

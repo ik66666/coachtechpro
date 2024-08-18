@@ -111,18 +111,22 @@
 .item__category{
     display: flex;
     flex-direction: row;
+    align-items: center;
     font-weight: bold;
     margin: 15px 0;
 }
 
 .item__category-value{
-    width: 100px;
-    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 35px;
     background-color: rgb(196, 194, 194);
     border: solid 0px ;
     border-radius: 8px;
-    margin-left: 20px;
-    padding-left: 25px;
+    margin-left: 25px;
+    
 }
 
 .item__condition{
