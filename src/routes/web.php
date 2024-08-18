@@ -53,7 +53,7 @@ Route::get('/address',[BuyController::class,'editAddress']);
 Route::post('/address',[BuyController::class,'addAddress']);
 });
 
-Route::get('/cart/checkout',[Buycontroller::class, 'checkout'])->name('cart.checkout');
+Route::post('/charge',[Buycontroller::class, 'charge'])->name('stripe.charge');
 
 
 Route::group(['middleware' => ['guest:admin']], function () {
