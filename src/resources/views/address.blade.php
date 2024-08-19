@@ -46,6 +46,9 @@
             <div class="form__button">
                 <button type="submit" class="update__button">更新する</button>
             </div>
+            <div class="back__link">
+                <a href="javascript:history.back()" class="back__link-a">戻る</a>
+            </div>
         </form>
     </div>
 </div>
