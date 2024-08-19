@@ -9,6 +9,11 @@
 @endsection
 
 @section('content')
+@if (session('success'))
+        <div style="padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+            {{ session('success') }}
+        </div>
+    @endif
 <div class="comment__content">
     <div class="item__image">
         <img src="{{ asset('storage/images/' . $items->image_url) }}" class="item__image-file">

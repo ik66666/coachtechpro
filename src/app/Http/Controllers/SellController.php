@@ -53,6 +53,8 @@ class SellController extends Controller
             'category_item_id' => $category_item_id,
         ]);
 
+        session()->flash('success', '商品の出品が完了しました');
+
         return redirect('/');
     }
 

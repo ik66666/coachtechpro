@@ -11,6 +11,11 @@
 
 @section('content')
 <div class="profile__content">
+    @if (session('success'))
+        <div style="padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="profile__header">
         <h2 class="header__title">プロフィール設定</h2>
     </div>
