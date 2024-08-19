@@ -10,6 +10,11 @@
 
 @section('content')
 <div class="container">
+    @if (session('success'))
+        <div style="padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="content__title">
         <a href="/" class="title">おすすめ</a>
         <a href="/my-favorite" class="title">マイリスト</a>

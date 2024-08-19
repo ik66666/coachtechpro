@@ -64,6 +64,9 @@ class ProfileController extends Controller
         $profile->update($items);
         }
 
+        session()->flash('success', 'プロフィールを更新しました');
+
+
         return redirect()->back();
 
 
