@@ -49,6 +49,19 @@
     font-weight: bold;
 }
 
+.back__link {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.back__link-a {
+    text-decoration: none;
+    font-size: 20px;
+}
+
 @media screen and (max-width: 768px) {
 
     .address__form {
