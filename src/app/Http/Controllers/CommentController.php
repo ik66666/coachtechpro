@@ -33,6 +33,8 @@ class CommentController extends Controller
             'comment' => $comment,
         ]);
 
+        session()->flash('success', 'コメントを投稿しました');
+
         return redirect()->route('item.comment',[$request->input('item_id')]);
     }
 }
