@@ -21,7 +21,8 @@
             </span>
         </div>
         <div class="profile__user">
-            <span class="profile__user-name">@if(!$profile->name){{ $profile->name }} 
+            <span class="profile__user-name">
+                @if($profile->name){{ $profile->name }} 
                 @else
                 ユーザー名
                 @endif

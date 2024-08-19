@@ -11,6 +11,7 @@ use App\Http\Requests\AddressRequest;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Charge;
+use Stripe\PaymentIntent;
 
 
 class BuyController extends Controller
@@ -34,6 +35,8 @@ class BuyController extends Controller
             'item_id' => $itemId,
         ]);
 
+        session()->flash('success', '商品の購入が完了しました');
+
         return view('index',compact('items'));
     }
 
@@ -53,18 +56,42 @@ class BuyController extends Controller
         return redirect()->back();
     }
 
-
     public function charge(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));//シークレットキー
- 
-        $charge = Charge::create(array(
-             'amount' => $request->input('price'),
-             'currency' => 'jpy',
-             'source'=> request()->stripeToken,
-         ));
+        Stripe::setApikey(env('STRIPE_SECRET'));
 
-         $item = $request->input('item_id');
-       return $this->buyItem($item);
+        $paymentMethods = ['card'];
+
+        $paymentMethod = $request->input('payment_method');
+
+        if($paymentMethod == 'konbini'){
+            $paymentMethods[] = 'konbini';
+        }elseif($paymentMethod == 'bank_transfer'){
+            $paymentMethods[] = 'bank_transfer';
+        }
+
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => [$paymentMethods],
+            'line_items' => [
+            [
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'product_data' => [
+                        'name' => $request->input('name'), // 商品名などの詳細
+                    ],
+                    'unit_amount' => $request->input('price'), // 金額を指定
+                ],
+                'quantity' => 1, // 数量
+            ],
+        ],
+            'mode' => 'payment',
+            'success_url' => route('bought.item',['item' => $request->input('item_id')]),
+            'cancel_url'  => route('buy.item',['item' => $request->input('item_id')]),
+        ]);
+ 
+       return view('cart.checkout',[
+            'session' => $session,
+            'publicKey' => env('STRIPE_KEY')
+       ]);
     }
 }

@@ -47,13 +47,13 @@ Route::post('/comment/{item}',[CommentController::class,'postComment']);
 Route::middleware('auth')->group(function (){
 Route::prefix('perchase')->group(function() {
 Route::get('/{item}',[BuyController::class,'showBuy'])->name('buy.item');
-Route::post('/{item}',[BuyController::class,'buyItem']);
+Route::get('/buy/{item}',[BuyController::class,'buyItem'])->name('bought.item');
 });
 Route::get('/address',[BuyController::class,'editAddress']);
 Route::post('/address',[BuyController::class,'addAddress']);
 });
 
-Route::post('/charge',[Buycontroller::class, 'charge'])->name('stripe.charge');
+Route::post('/charge',[Buycontroller::class, 'charge'])->name('cart.checkout');
 
 
 Route::group(['middleware' => ['guest:admin']], function () {

@@ -7,7 +7,7 @@
         stripe.redirectToCheckout({
             sessionId: '{{ $session->id }}'
         }).then(function (result) {
-            window.location.href = 'http://localhost/cart';
+            window.location.href = 'http://localhost/buy';
         });
     }
 </script>
