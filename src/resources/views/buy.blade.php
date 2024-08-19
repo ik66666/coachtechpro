@@ -10,23 +10,6 @@
 
 @section('content')
 
-<style type="text/css">
-<!--
-button.stripe-button-el,
-button.stripe-button-el>span {
-    width: 440px;
-    height: 60px;
-    background-color: rgb(241, 66, 66) !important;
-    background-image: none;
-    color: white;
-    font-size: 30px;
-    border: solid 1px ;
-    border-radius: 5px;
-    cursor: pointer;
-}
--->
-</style>
-
 <div class="buy__content">
     <div class="item__detail">
         <div class="item__detail-top">
@@ -78,23 +61,18 @@ button.stripe-button-el>span {
             </div>
         </div>
         <div class="buy__form">
-            <form action="{{route('stripe.charge')}}" method="POST">
-            @csrf
-            <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="{{ env('STRIPE_KEY') }}"
-                data-amount="{{ $items->price}}"
-                data-name="お支払い画面"
-                data-label="payment"
-                data-description="現在はデモ画面です"
-                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="auto"
-                data-currency="JPY">
-            </script>
-            <input type="hidden" name="price" value="{{ $items->price}}">
-            <input type="hidden" name="item_id" value="{{$items->id}}">
+            <form id="payment-form" action="/charge" method="POST">
+                @csrf
+                <button  type="submit" class="">
+                    購入する
+                </button>
+                <input type="hidden" name="name" value="{{ $items->name}}">
+                <input type="hidden" name="price" value="{{ $items->price}}">
+                <input type="hidden" name="item_id" value="{{$items->id}}">
             </form>
         </div>
     </div>
 </div>
+
+
 @endsection
