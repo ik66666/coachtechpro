@@ -51,6 +51,8 @@ Route::get('/buy/{item}',[BuyController::class,'buyItem'])->name('bought.item');
 });
 Route::get('/address',[BuyController::class,'editAddress']);
 Route::post('/address',[BuyController::class,'addAddress']);
+Route::get('/change/{item}',[BuyController::class,'showPaymethod']);
+Route::post('/change/method/{item}',[BuyController::class,'changePaymethod']);
 });
 
 Route::post('/charge',[Buycontroller::class, 'charge'])->name('cart.checkout');
