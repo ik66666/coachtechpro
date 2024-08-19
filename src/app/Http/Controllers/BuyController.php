@@ -21,7 +21,8 @@ class BuyController extends Controller
         $userId = Auth::id();
         $items = Item::where('id',$item)->first();
         $profile = Profile::where('users_id',$userId)->first();
-        return view('buy',compact('items','profile'));
+        $paymethod = "クレジットカード";
+        return view('buy',compact('items','profile','paymethod'));
     }
 
     public function buyItem($item)
@@ -56,13 +57,35 @@ class BuyController extends Controller
         return redirect()->back();
     }
 
+
+    public function showPaymethod($item)
+    {
+        $item_id = $item;
+        return view('cart.change',compact('item_id'));
+    }
+
+    public function changePaymethod(Request $request)
+    {
+        $userId = Auth::id();
+        $item = $request->input('item_id');
+        $paymethod = $request->input('paymethod');
+        $items = Item::where('id',$item)->first();
+        $profile = Profile::where('users_id',$userId)->first();
+        return view('buy',[
+            'item' => $item,
+            'paymethod' => $paymethod,
+            'items' => $items,
+            'profile' => $profile,
+        ]);
+    }
     public function charge(Request $request)
     {
         Stripe::setApikey(env('STRIPE_SECRET'));
 
         $paymentMethods = ['card'];
 
-        $paymentMethod = $request->input('payment_method');
+
+        $paymentMethod = $request->input('paymethod')
 
         if($paymentMethod == 'konbini'){
             $paymentMethods[] = 'konbini';
@@ -71,17 +94,18 @@ class BuyController extends Controller
         }
 
         $session = \Stripe\Checkout\Session::create([
-            'payment_method_types' => [$paymentMethods],
+            'payment_method_types' => $paymentMethods,
             'line_items' => [
             [
                 'price_data' => [
                     'currency' => 'jpy',
                     'product_data' => [
-                        'name' => $request->input('name'), // 商品名などの詳細
+                        'name' => $request->input('name'), 
                     ],
-                    'unit_amount' => $request->input('price'), // 金額を指定
+                    'unit_amount' => $request->input('price'), 
                 ],
-                'quantity' => 1, // 数量
+                'quantity' => 1, 
+
             ],
         ],
             'mode' => 'payment',
