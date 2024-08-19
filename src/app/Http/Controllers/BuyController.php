@@ -57,6 +57,7 @@ class BuyController extends Controller
         return redirect()->back();
     }
 
+
     public function showPaymethod($item)
     {
         $item_id = $item;
@@ -77,14 +78,14 @@ class BuyController extends Controller
             'profile' => $profile,
         ]);
     }
-
     public function charge(Request $request)
     {
         Stripe::setApikey(env('STRIPE_SECRET'));
 
         $paymentMethods = ['card'];
 
-        $paymentMethod = $request->input('paymethod');
+
+        $paymentMethod = $request->input('paymethod')
 
         if($paymentMethod == 'konbini'){
             $paymentMethods[] = 'konbini';
@@ -104,6 +105,7 @@ class BuyController extends Controller
                     'unit_amount' => $request->input('price'), 
                 ],
                 'quantity' => 1, 
+
             ],
         ],
             'mode' => 'payment',

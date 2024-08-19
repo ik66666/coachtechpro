@@ -80,12 +80,15 @@
         <div class="buy__form">
             <form id="payment-form" action="/charge" method="POST">
                 @csrf
+
                 <button  type="submit" class="buy__button">
+            
                     購入する
                 </button>
                 <input type="hidden" name="name" value="{{ $items->name}}">
                 <input type="hidden" name="price" value="{{ $items->price}}">
                 <input type="hidden" name="item_id" value="{{$items->id}}">
+
                 <input type="hidden" name="name" value="{{ $paymethod }}">
             </form>
         </div>
