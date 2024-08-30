@@ -22,10 +22,11 @@
         </div>
         <div class="profile__user">
             <span class="profile__user-name">
-                @if($profile->name){{ $profile->name }} 
-                @else
+            @if(isset($profile) && $profile->name)
+            {{ $profile->name }} 
+            @else
                 ユーザー名
-                @endif
+            @endif
             </span>
         </div>
         <div class="profile__edit">

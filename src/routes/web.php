@@ -35,7 +35,7 @@ Route::post('/edit-profile',[ProfileController::class,'editProfile']);
 Route::middleware('auth')->group(function (){
 Route::prefix('sell')->group(function() {
     Route::get('/',[SellController::class,'showSell'])->name('sell');
-    Route::post('/',[SellController::class,'sellItem']);
+    Route::post('/',[SellController::class,'sellItem'])->name('sell.item');
 });
 });
 
@@ -52,7 +52,7 @@ Route::get('/buy/{item}',[BuyController::class,'buyItem'])->name('bought.item');
 Route::get('/address',[BuyController::class,'editAddress']);
 Route::post('/address',[BuyController::class,'addAddress']);
 Route::get('/change/{item}',[BuyController::class,'showPaymethod']);
-Route::post('/change/method/{item}',[BuyController::class,'changePaymethod']);
+Route::post('/change/method/{item}',[BuyController::class,'changePaymethod'])->name('change.method');
 Route::post('/charge',[Buycontroller::class, 'charge'])->name('cart.checkout');
 });
 
@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin', [AuthController::class, 'index'])->name('admin.index');
     Route::get('admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
     Route::get('admin/{user}',[AuthController::class, 'showComment']);
-    Route::delete('admin/delete/{user}',[AuthController::class, 'deleteUser']);
-    Route::delete('comment/delete/{comment}',[AuthController::class, 'deleteComment']);
-    Route::post('email/{user}',[AuthController::class,'sendEmail']);
+    Route::delete('admin/delete/{user}',[AuthController::class, 'deleteUser'])->name('admin.deleteUser');
+    Route::delete('comment/delete/{comment}',[AuthController::class, 'deleteComment'])->name('admin.deleteComment');
+    Route::post('email/{user}',[AuthController::class,'sendEmail'])->name('email.send');
 });
