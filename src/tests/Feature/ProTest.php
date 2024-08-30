@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Profile;
 use App\Models\Category;
 use App\Models\Condition;
 
@@ -38,27 +39,58 @@ class ProTest extends TestCase
             'name' => 'スポーツ',
         ]);
 
-        
-
-        Item::factory()->create([
-            'name'  => 'サンプル',
-            'price' => '5000',
-            'description' => 'あいうえお',
-            'users_id' => $user1->id,
-            'condition_id' => $condition->id,
-        ]);
-
+        $items = Item::factory()->count(5)->create();
         $response = $this->get('/');
         $response->assertStatus(200);
         $response->assertViewIs('index');
-        $response = $this->get('/no_route');
-        $response->assertStatus(404);
-        
+
         foreach ($items as $item) {
-            $response->assertSee($item->name);
-        }
-        foreach ($items as $item) {
-            $response->assertSee($item->price);
+        $response->assertSee($item->name);
+        $response->assertSee(number_format($item->price)); 
         }
     }
+    public function testNoRoute()
+    {
+        
+        $response = $this->get('/no_route');
+        $response->assertStatus(404); 
+    }
+    public function testRegister()
+    {
+        $userData = [
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ];
+
+        $response = $this->post('/register', $userData);
+
+        $response->assertRedirect('/login'); 
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'test@example.com',
+        ]);
+    }
+
+    public function testLogin()
+    {
+
+        $user = User::create([
+            'email' => 'iii@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+
+        $response = $this->post('/login', [
+            'email' => 'iii@example.com',
+            'password' => 'password',
+        ]);
+
+
+        $response->assertRedirect('/login');
+        $this->assertAuthenticatedAs($user);
+    }
+
+    
+
 }
