@@ -28,7 +28,6 @@ class ItemFactory extends Factory
             'price' => $this->faker->numberBetween(100,999999),
             'description' => $this->faker->sentence(),
             'users_id' => User::factory(),
-            'category_item_id' => CategoryItem::factory(),
             'condition_id' => Condition::factory(),
         ];
     }
