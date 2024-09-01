@@ -7,11 +7,6 @@ use App\Http\Controllers\SellController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\BuyController;
 use App\Http\Controllers\Auth\AuthController;
-//use App\Http\Controllers\RegisterController;
-
-//Route::post('register',[RegisterController::class,'store']);
-
-//Route::middleware('auth')->group(function ()
 
 Route::get('/',[ItemController::class,'index'])->name('home.index');
 Route::post('/',[ItemController::class,'search']);
