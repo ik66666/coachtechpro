@@ -22,7 +22,7 @@ class CreateItemsTable extends Migration
             $table->string('description');
             $table->string('image_url')->nullable();
             $table->foreignId('users_id')->constrained('users');
-            //$table->foreignId('category_item_id')->constrained('category_items')->nullable();
+            $table->foreignId('category_item_id')->constrained('category_items')->nullable();
             $table->foreignId('condition_id')->constrained('conditions');
             $table->timestamps();
         });
