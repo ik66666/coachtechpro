@@ -3,7 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.4-node-browsers
-    working_directory: /home/circleci/project
     steps:
       - checkout
       - run:
