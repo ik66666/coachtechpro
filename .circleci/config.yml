@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   build:
     docker:
@@ -7,8 +8,8 @@ jobs:
     steps:
       - checkout
       - run:
-      name: Check current directory
-      command: pw
+          name: Check current directory
+          command: pwd
       - run: sudo composer self-update --2
       - run: composer install -n --prefer-dist
       - run: npm ci
