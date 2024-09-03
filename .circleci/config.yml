@@ -8,7 +8,10 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: cd ./src && composer install
+          command: |
+            cd ./src
+            cp .env.testing .env
+            composer install
       - run:
           name: Run tests
           command: cd ./src && ./vendor/bin/phpunit
