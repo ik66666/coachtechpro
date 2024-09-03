@@ -6,12 +6,6 @@ jobs:
     working_directory: src
     steps:
       - checkout
-      - run:
-          name: Clear cache
-          command: |
-            echo "Clearing cache..."
-            rm -rf ~/.cache/composer/*
-            rm -rf ~/.npm/*
       - run: sudo composer self-update --2
       - run: composer install -n --prefer-dist
       - run: npm ci
