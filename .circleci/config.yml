@@ -4,6 +4,7 @@ jobs:
     docker:
       - image: circleci/php:7.3-node-browsers
     working_directory: ~/advanced-laravel/src
+    steps:
       - checkout
       - run: sudo composer self-update --2
       - run: composer install -n --prefer-dist
