@@ -6,10 +6,6 @@ jobs:
       - image: circleci/php:7.4-node-browsers
     working_directory: ~/project
     steps:
-      - checkout
-      - run:
-          name: Check current directory
-          command: pwd
       - run: sudo composer self-update --2
       - run: composer install -n --prefer-dist
       - run: npm ci
