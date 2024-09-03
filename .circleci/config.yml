@@ -6,6 +6,12 @@ jobs:
     working_directory: src
     steps:
       - checkout
+      - run:
+          name: SSHの権限を設定
+          command: |
+            chmod 700 ~/.ssh
+            chmod 600 ~/.ssh/id_rsa
+            chmod 644 ~/.ssh/id_rsa.pub
       - run: sudo composer self-update --2
       - run: composer install -n --prefer-dist
       - run: npm ci
