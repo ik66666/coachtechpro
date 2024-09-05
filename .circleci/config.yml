@@ -8,7 +8,7 @@ jobs:
             PHP_MEMORY_LIMIT: "512M"
       - image: circleci/mysql:5.7  # MySQLサービスを追加
         environment:
-            MYSQL_DATABASE: demo_test
+            - DB_CONNECTION: mysql_test
             MYSQL_ALLOW_EMPTY_PASSWORD: true
     steps:
       - checkout
