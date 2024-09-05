@@ -29,8 +29,6 @@ class ItemFactory extends Factory
             'description' => $this->faker->sentence(),
             'users_id' => User::factory(),
             'condition_id' => Condition::factory(),
-            'category_item_id' => CategoryItem::factory(),
-
         ];
     }
 }
