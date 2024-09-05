@@ -4,6 +4,8 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.4
+        environment:
+            PHP_MEMORY_LIMIT: "512M"
     steps:
       - checkout
 
@@ -19,7 +21,14 @@ jobs:
           command: |
             cd ./src
             cp .env.testing .env
-            php artisan config:cache
+      - run:
+          name: Clear cache
+          command: |
+            cd ./src
+            php artisan cache:clear
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
 
       - run:
           name: Run tests
