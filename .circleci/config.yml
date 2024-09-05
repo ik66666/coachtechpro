@@ -7,9 +7,6 @@ jobs:
         environment:
             PHP_MEMORY_LIMIT: "512M"
       - image: circleci/mysql:8.0  # MySQLサービスを追加
-        environment:
-            MYSQL_DATABASE: demo_test
-            MYSQL_ROOT_PASSWORD: root  # ルートユーザーのパスワードを設定
     steps:
       - checkout
 
@@ -25,6 +22,9 @@ jobs:
           command: |
             cd ./src
             cp .env.testing .env
+            sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env  # DB_HOSTをmysqlに設定
+            sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env  # DB_USERNAMEをrootに設定
+            sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' .env  # DB_PASSWORDを設定
       - run:
           name: Clear cache
           command: |
