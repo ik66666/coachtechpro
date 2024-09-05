@@ -10,6 +10,7 @@ use App\Models\Condition;
 use App\Models\Profile;
 use App\Models\SoldItem;
 
+
 class BuyTest extends TestCase
 {
     use RefreshDatabase;

@@ -3,6 +3,9 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Category;
+use Faker\Generator as Faker;
+use App\Models\Item;
 
 class CategoryItemFactory extends Factory
 {
