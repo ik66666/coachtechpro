@@ -6,27 +6,31 @@ jobs:
       - image: circleci/php:7.4
         environment:
             PHP_MEMORY_LIMIT: "512M"
-      - image: circleci/mysql:8.0  # MySQLサービスを追加
+      - image: circleci/mysql:8.0
         environment:
           MYSQL_DATABASE: demo_test
-          MYSQL_PASSWORD: root
-    environment:
-      - DB_HOST: 127.0.0.1
+          MYSQL_ROOT_PASSWORD: root  # ルートユーザーのパスワードを設定
     steps:
       - checkout
 
       - run:
-          name: Install dependencies
+          name: Wait for MySQL to be ready
           command: |
-            cd ./src
-            sudo docker-php-ext-install pdo pdo_mysql
-            composer install
+            for i in $(seq 1 30); do
+              if mysqladmin ping -h mysql --silent; then
+                break
+              fi
+              echo "Waiting for MySQL..."
+              sleep 1
+            done
 
       - run:
           name: Set up environment
           command: |
             cd ./src
             cp .env.testing .env
+            sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env  # DB_HOSTをmysqlに設定
+
       - run:
           name: Clear cache
           command: |
@@ -37,8 +41,13 @@ jobs:
             php artisan view:clear
 
       - run:
-          name: Run tests
+          name: Run migrations
           command: |
             cd ./src
             php artisan migrate --env=testing
+
+      - run:
+          name: Run tests
+          command: |
+            cd ./src
             php ./vendor/bin/phpunit --configuration=phpunit.xml
