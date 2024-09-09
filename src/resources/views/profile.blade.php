@@ -25,9 +25,13 @@
             <div class="form__image">
                 <span class="form__image">
                     <label for="avatar" class="form__image-item">
-                    <img src="/images/avatar-default.png" class="rounded-circle" style="object-fit: cover; width: 150px; height: 150px;">
+                        <img src="{{ asset('images/default.png') }}" class="rounded-circle" style="object-fit: cover; width: 150px; height: 150px;">
                     </label>
-                    <input type="file" name="image_url"  class="fomr__image" value="画像を選択する" accept="image/png,image/jpeg,image/gif" />
+
+                    <label for="image_url" class="file__label">
+                        <input type="file" name="image_url" id="image_url" class="form__image"  accept="image/png,image/jpeg,image/gif" />
+                        <span>画像を選択する</span>
+                    </label>
                 </span>
             </div>
             <div class="form__item">
@@ -69,6 +73,9 @@
             <div class="form__button">
                 <button type="submit" class="form__button-btn">更新する</button>
             </div>
+            <div class="back__link">
+                    <a href="/mypage" class="back__link-a">戻る</a>
+                </div>
         </div>
         </form>
     </div>
