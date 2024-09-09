@@ -1,0 +1,49 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.4
+        environment:
+            PHP_MEMORY_LIMIT: "512M"
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: demo_test
+          MYSQL_ROOT_PASSWORD: root
+
+    environment:
+      APP_ENV: test
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: demo_test
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            cd ./src
+            sudo docker-php-ext-install pdo pdo_mysql
+            composer install
+
+      - run:
+          name: Set up environment
+          command: |
+            cd ./src
+            cp .env.testing .env
+      - run:
+          name: Clear cache
+          command: |
+            cd ./src
+            php artisan cache:clear
+            php artisan config:clear
+
+      - run:
+          name: Run tests
+          command: |
+            cd ./src
+            php artisan migrate:fresh --env=testing
+            php ./vendor/bin/phpunit
