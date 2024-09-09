@@ -17,10 +17,11 @@
         <form action="/sell" method="post" class="form" enctype="multipart/form-data">
             @csrf
             <div class="content__image">
-                <label for="iamge_url" class="content__detail-image">商品画像</label>
+                <label  class="content__detail-image">商品画像</label>
                 <div class="content__image-item">
-                    <input type="file" name="image_url" class="image-item" accept="image/png,image/jpeg,image/gif" >
-                    <label for="image_url" class="" role="button">
+                    <label for="image_url" class="file__label">
+                        <input type="file" name="image_url" id="image_url" class="form__image"  accept="image/png,image/jpeg,image/gif" />
+                        <span>画像を選択する</span>
                     </label>
                 </div>
                 @error('image')

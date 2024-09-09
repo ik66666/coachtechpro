@@ -22,6 +22,21 @@
     flex-direction: column;
 }
 
+label .form__image {
+    display: none;
+
+}
+
+.file__label {
+    color: #ff8585;
+    background-color: #ffffff;
+    padding: 12px;
+    border: solid 1px #ff8989;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 30px;
+}
+
 .content__detail-image{
     font-weight: bold;
 
@@ -30,6 +45,7 @@
 .content__image-item{
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 680px;
     height: 125px;
     border: solid 1px rgb(202, 202, 202);
