@@ -1,13 +1,3 @@
-@extends('layouts.app2')
+<p>メッセージ：{!! nl2br( $data['message'] ) !!}</p>
 
-@section('title')
-メール受信
-@endsection
-
-@section('css')
-<link rel="stylesheet" href="{{ asset('css/email.css') }}">
-@endsection
-
-@section('content')
-<span>会員登録完了のお知らせ</span>
-@endsection
+<p>メッセージが送信されました。</p>
