@@ -72,8 +72,14 @@ td {
     text-decoration: none;
 }
 
+.item__detail-email{
+    text-decoration: none;
+    color: white;
+}
+
 .user__delete-button{
     background-color: rgb(250, 92, 92);
+    text-decoration: none;
     color: white;
     width: 150px;
     height: 35px;
