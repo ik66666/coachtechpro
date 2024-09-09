@@ -21,7 +21,7 @@
     <main>
         <div class="admin__content">
             @if (session('flash_message'))
-            <div class="flash_message">
+            <div class="flash_message" style="padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
                 {{ session('flash_message') }}
             </div>
             @endif
@@ -46,10 +46,7 @@
                                     <a href="/admin/{{ $user->id }}" class="item__detail-a">コメント一覧</a>
                                 </td>
                                 <td class="item__detail">
-                                    <form action="/email/{{ $user->id}}" method="post" class="form">
-                                        @csrf
-                                        <button type="submit" class="user__delete-button">メール送信</button>
-                                    </form>
+                                        <button type="submit" class="user__delete-button"><a href="/email/{{ $user->id }}" class="item__detail-email">メール送信</a></button>
                                 </td>
                                 <td class="item__detail">
                                     <form action="/admin/delete/{{ $user->id }}" method="post" class="form">
