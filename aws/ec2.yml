@@ -1,0 +1,149 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation template to create an EC2 instance with VPC and subnets."
+
+Parameters:
+  Ec2ImageId:
+    Description: "AMI ID for the EC2 instance (Amazon Linux 2 AMI)."
+    Type: String
+    Default: ami-06aa91d03bbe9eed7  # リージョンに適したAMI IDに変更
+
+  Ec2InstanceType:
+    Description: "EC2 Instance Type"
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
+    ConstraintDescription: "Must be a valid EC2 instance type."
+
+  Ec2KeyName:
+    Description: "Name of an existing EC2 KeyPair to enable SSH access to the instance."
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: laravel-ci-ec2-user  # 使用中のキーペア名に変更
+
+  VpcCidrBlock:
+    Description: "CIDR block for the VPC."
+    Type: String
+    Default: 172.18.0.0/16
+
+  PublicSubnetCidrBlock:
+    Description: "CIDR block for the public subnet."
+    Type: String
+    Default: 172.18.1.0/24
+
+  PrivateSubnet01CidrBlock:
+    Description: "CIDR block for the first private subnet."
+    Type: String
+    Default: 172.18.2.0/24
+
+  PrivateSubnet02CidrBlock:
+    Description: "CIDR block for the second private subnet."
+    Type: String
+    Default: 172.18.3.0/24
+
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidrBlock
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: MyVPC
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: !Ref PublicSubnetCidrBlock
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet
+
+  PrivateSubnet01:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: !Ref PrivateSubnet01CidrBlock
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet01
+
+  PrivateSubnet02:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: !Ref PrivateSubnet02CidrBlock
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet02
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: MyInternetGateway
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PublicRouteTable
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref Ec2InstanceType
+      KeyName: !Ref Ec2KeyName
+      ImageId: !Ref Ec2ImageId
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: "0"
+          SubnetId: !Ref PublicSubnet
+          GroupSet:
+            - !Ref MySecurityGroup
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Enable SSH access via port 22"
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: "22"
+          ToPort: "22"
+          CidrIp: "0.0.0.0/0"
+Outputs:
+  InstanceId:
+    Description: "Instance ID of the EC2 instance"
+    Value: !Ref MyEC2Instance
+
+  PublicIP:
+    Description: "Public IP address of the EC2 instance"
+    Value: !GetAtt MyEC2Instance.PublicIp

@@ -28,17 +28,6 @@ jobs:
             cd ./src
             sudo docker-php-ext-install pdo pdo_mysql
             composer install
-      
-      - run:
-          name: Wait for MySQL to be ready
-          command: |
-            for i in $(seq 1 60); do  # 待機時間を60秒に変更
-              if mysqladmin ping -h mysql --silent; then
-                break
-              fi
-              echo "Waiting for MySQL..."
-              sleep 1
-            done
 
       - run:
           name: Set up environment
@@ -56,5 +45,5 @@ jobs:
           name: Run tests
           command: |
             cd ./src
-            php artisan migrate --env=testing
+            php artisan migrate:fresh --env=testing
             php ./vendor/bin/phpunit
