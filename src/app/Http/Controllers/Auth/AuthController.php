@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminEmail;
+use App\Http\Requests\MailRequest;
+
 
 
 class AuthController extends Controller
@@ -59,12 +61,22 @@ class AuthController extends Controller
         return redirect()->back();
     }
 
-    public function sendEmail(User $user)
+    public function showEmail($user)
     {
-        $email = new AdminEmail();
+        $user = User::where('id',$user)->first();
+        return view('mail/mail-form',compact('user'));
+    }
 
-        $users = new User();
-        $user_email = $users->email;
+    public function sendEmail(MailRequest $request)
+    {
+
+        $data = [
+        'message' => $request->input('message'),
+        ];
+        $email = new AdminEmail($data);
+
+        $user = User::where('id', $request->user)->first();
+        $user_email = $user->email;
 
         Mail::to($user_email)->send($email);
 

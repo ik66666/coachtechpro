@@ -27,7 +27,7 @@
                 <button class="change__method">変更する</button>
             </div>
             <div class="back__link">
-                <a href="/buy/{{$item_id}}" class="back__link-a">戻る</a>
+                <a href="javascript:history.back()" class="back__link-a">戻る</a>
             </div>
         </form>
     </div>

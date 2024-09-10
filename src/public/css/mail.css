@@ -1,0 +1,83 @@
+header {
+    max-width: 100%;
+    height: 80px;
+    background-color: black;
+    margin: 0;
+}
+
+.header__content {
+    padding: 15px 0;
+    text-align: left;
+}
+
+.header {
+    display: flex;
+    flex-direction: row-reverse;
+    padding-right: 50px;
+    align-items: center;
+}
+
+
+main {
+    max-width: 100%;
+    padding-bottom: 50px;
+}
+
+.admin__header {
+    margin-top: 45px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: solid 2px rgb(197, 197, 197);
+}
+
+.form__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    width: 30%;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.form__control {
+    width: 100%;
+    height: 50px;
+    border: solid 1px;
+    border-radius: 5px;
+
+}
+
+.back__link {
+    margin-top: 20px;
+}
+
+.back__link-a {
+    text-decoration: none;
+    font-size: large;
+}
+
+.button {
+    width: 100%;
+    margin-top: 50px;
+}
+
+
+.btn {
+    width: 100%;
+    height: 60px;
+    background-color: rgb(236, 88, 88);
+    color: white;
+    border: solid 1px rgb(236, 88, 88);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.error__message {
+    text-align: left;
+    color: rgb(245, 18, 18);
+    margin-top: 10px;
+    font-weight: bold;
+}

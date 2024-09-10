@@ -39,41 +39,70 @@ header {
     border-bottom: solid 2px rgb(197, 197, 197);
 }
 
-.user__list{
+.user__list {
     width: 90%;
     margin: 60px auto;
 }
 
-table{
+table {
     width: 100%;
     text-align: center;
 }
 
-.user__list-header{
+.user__list-header {
     margin: 30px auto;
 }
 
-th{
+.user__list-header-title{
     width: 300px;
     height: 50px;
     font-size: 30px;
     border: solid 1px rgb(197, 197, 197);
 }
 
-td {
-    width: 300px;
+.user__list-header-title-top {
+    width: 100px;
+    height: 50px;
+    font-size: 30px;
+    border: solid 1px rgb(197, 197, 197);
+}
+
+.item__detail{
+    width: 350px;
     height: 50px;
     font-size: 30px;
     text-align: center;
     border: solid 1px rgb(197, 197, 197);
 }
 
-.item__detail-a{
+.item__detail-top {
+    width: 100px;
+    height: 50px;
+    font-size: 30px;
+    text-align: center;
+    border: solid 1px rgb(197, 197, 197);
+}
+
+.item__detail-last{
+    width: 150px;
+    height: 50px;
+    font-size: 30px;
+    text-align: center;
+    border: solid 1px rgb(197, 197, 197);
+}
+
+.item__detail-a {
     text-decoration: none;
 }
 
-.user__delete-button{
+.item__detail-email {
+    text-decoration: none;
+    color: white;
+}
+
+.user__delete-button {
     background-color: rgb(250, 92, 92);
+    text-decoration: none;
     color: white;
     width: 150px;
     height: 35px;
@@ -81,5 +110,3 @@ td {
     border-radius: 5px;
     cursor: pointer;
 }
-
-
