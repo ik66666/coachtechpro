@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminEmail;
+use App\Http\Requests\MailRequest;
+
 
 
 class AuthController extends Controller
@@ -65,7 +67,7 @@ class AuthController extends Controller
         return view('mail/mail-form',compact('user'));
     }
 
-    public function sendEmail(Request $request)
+    public function sendEmail(MailRequest $request)
     {
 
         $data = [

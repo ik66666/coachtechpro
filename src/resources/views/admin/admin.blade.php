@@ -31,7 +31,7 @@
             <div class="user__list">
                 <table>
                     <div class="user__list-header">
-                        <th class="user__list-header-title">ID</th>
+                        <th class="user__list-header-title-top">ID</th>
                         <th class="user__list-header-title">email</th>
                         <th class="user__list-header-title">コメント</th>
                         <th class="user__list-header-title"></th>
@@ -40,15 +40,15 @@
                     @foreach($users as $user)
                         <div class="user__list-item">
                             <tr class="user__list-item-raw">
-                                <td class="item__detail">{{ $user->id}}</td>
+                                <td class="item__detail-top">{{ $user->id}}</td>
                                 <td class="item__detail">{{ $user->email}}</td>
-                                <td class="item__detail">
+                                <td class="item__detail-last">
                                     <a href="/admin/{{ $user->id }}" class="item__detail-a">コメント一覧</a>
                                 </td>
-                                <td class="item__detail">
+                                <td class="item__detail-last">
                                         <button type="submit" class="user__delete-button"><a href="/email/{{ $user->id }}" class="item__detail-email">メール送信</a></button>
                                 </td>
-                                <td class="item__detail">
+                                <td class="item__detail-last">
                                     <form action="/admin/delete/{{ $user->id }}" method="post" class="form">
                                         @csrf
                                         @method('DELETE')
