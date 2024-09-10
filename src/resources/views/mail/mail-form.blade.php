@@ -29,9 +29,11 @@
 
                     <h3>メッセージ</h3>
                     <input type="text" name="message" value="{{ old('message') }}" class="form__control">
-                    @if ($errors->has('message'))
-                    <p class="bg-danger">{{ $errors('message') }}</p>
-                    @endif
+                    @error('message')
+                    <span class="error__message" >
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                     <input type="hidden" name="user" value="{{ $user->id }}" >
                     <div class="button">
                         <button type="submit" class="btn ">送信</button>
