@@ -22,28 +22,35 @@
         </div>
         <div class="item__link">
             <div class="item__like">
-                    @if ($likes)
+                @if ($likes)
                     <form action="/favorite/{{ $items->id }}" method="POST" class="form__like" >
                     <input type="hidden" name="item_id" value="{{$items->id}}">
                     <input type="hidden" name="users_id" value="{{Auth::id()}}">
                     @csrf
                     @method('DELETE')
-                    <input type="image" src="/images/star.png" class="like__button">
+                    <div class="likes">
+                        <input type="image" src="/images/star.png" class="like__button">
+                        <span class="likes_count">{{ $likeCount }}</span>
+                    </div>
                     </form>
-                    @else
+                @else
                     <form action="/favorite/{{ $items->id }}" method="POST" class="form__like" >
                     <input type="hidden" name="item_id" value="{{$items->id}}">
                     <input type="hidden" name="users_id" value="{{Auth::id()}}">
                     @csrf
-                    <input type="image" src="/images/star.png" class="like__button">
+                    <div class="likes">
+                        <input type="image" src="/images/star.png" class="like__button">
+                        <span class="likes_count">{{ $likeCount }}</span>
+                    </div>
                     </form>
 
-                    @endif
-                    <div class="item__comment">
+                @endif
+                <div class="item__comment">
                     <a href="/comment/{{$items->id}}" class="comment__button">
                     <img src="/images/comment.png" alt="" class="comment__image">
                     </a>
-            </div>
+                    <span class="comment_count">{{ $CommentCount }}</span>
+                </div>
             </div>
         </div>
         <div class="item__buy">

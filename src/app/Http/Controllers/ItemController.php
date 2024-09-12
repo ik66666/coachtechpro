@@ -8,6 +8,7 @@ use App\Models\Condition;
 use App\Models\Category;
 use App\Models\CategoryItem;
 use App\Models\Like;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -51,21 +52,30 @@ class ItemController extends Controller
 
         $items = Item::with('category_item','condition')->where('id',$item)->first();
         $category_item = CategoryItem::with('category','item')->where('item_id',$item)->first();
-        $likes = Like::where('users_id',$userId)->where('item_id',$item)->first();
-        return view('detail',compact('items','category_item','likes'));
+        $likes = Like::where('users_id', $userId)->where('item_id', $item)->first();
+        $likeCount = Like::where('users_id', $userId)->where('item_id', $item)->count();
+        $CommentCount = Comment::where('item_id',$item)->count();
+
+        return view('detail',compact('items','category_item','likes','likeCount','CommentCount'));
     }
 
     public function favorite(Request $request)
     {
+
         $item = $request->input('item_id');
-        $user = $request->input('users_id');
+        $userId = $request->input('users_id');
 
         Like::create([
-            'users_id' => $user,
+            'users_id' => $userId,
             'item_id' => $item,
         ]);
+        $items = Item::with('category_item','condition')->where('id',$item)->first();
+        $category_item = CategoryItem::with('category','item')->where('item_id',$item)->first();
+        $likes = Like::where('users_id',$userId)->where('item_id',$item)->get();
+        $likeCount = Like::where('users_id', $userId)->where('item_id', $item)->count();
 
-        return redirect()->back();
+        return redirect()->back()->with('likeCount', $likeCount);
+
     }
 
     public function destroy(Request $request)
@@ -74,6 +84,12 @@ class ItemController extends Controller
         $item = $request->input('item_id');
         $likes = Like::where('users_id',$userId)->where('item_id',$item)->delete();
 
-        return redirect()->back();
+        $items = Item::with('category_item','condition')->where('id',$item)->first();
+        $category_item = CategoryItem::with('category','item')->where('item_id',$item)->first();
+        $likes = Like::where('users_id',$userId)->where('item_id',$item)->get();
+        $likeCount = Like::where('users_id', $userId)->where('item_id', $item)->count();
+
+        return redirect()->back()->with('likeCount', $likeCount);
+
     }
 }
