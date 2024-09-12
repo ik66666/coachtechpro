@@ -16,15 +16,15 @@ coachtechブランドのアイテムを出品する
 - テーブル設計書
 - 基本設計書
 - ER図
-https://docs.google.com/spreadsheets/d/1TBjWt6wV2KDjiLHLZxxmBXTdWIpoOQOtQF-MfLJrZPo/edit?usp=sharing
+- https://docs.google.com/spreadsheets/d/1TBjWt6wV2KDjiLHLZxxmBXTdWIpoOQOtQF-MfLJrZPo/edit?usp=sharing
 
 ## 2.開発環境構築方法
 
 #### 1. Docker  のインストール
 ※Windows（Linux環境）での開発を想定してます。
  docker desktopを下記リンクよりインストールしてください。
-https://www.docker.com/products/docker-desktop/
-インストール方法は公式ドキュメントを参照してください。
+- https://www.docker.com/products/docker-desktop/
+- インストール方法は公式ドキュメントを参照してください。
 
 #### 2.ディレクトリの作成
 

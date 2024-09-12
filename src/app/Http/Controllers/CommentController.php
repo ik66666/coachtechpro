@@ -17,8 +17,10 @@ class CommentController extends Controller
         $userId = Auth::id();
         $items = Item::with('category_item','condition')->where('id',$item)->first();
         $likes = Like::where('users_id',$userId)->where('item_id',$item)->first();
+        $likeCount = Like::where('users_id', $userId)->where('item_id', $item)->count();
         $comments = Comment::with('user')->where('item_id',$item)->get();
-        return view('comment',compact('comments','items','likes'));
+        $CommentCount = Comment::where('item_id',$item)->count();
+        return view('comment',compact('comments','items','likes','likeCount','CommentCount'));
     }
 
     public function postComment(CommentRequest $request)
@@ -34,7 +36,8 @@ class CommentController extends Controller
         ]);
 
         session()->flash('success', 'コメントを投稿しました');
+        $CommentCount = Comment::where('item_id',$item)->count();
 
-        return redirect()->route('item.comment',[$request->input('item_id')]);
+        return redirect()->route('item.comment',[$request->input('item_id')])->with('CommentCount', $CommentCount);
     }
 }

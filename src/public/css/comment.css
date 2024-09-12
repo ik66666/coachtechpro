@@ -59,9 +59,21 @@
     height: 40px;
 }
 
+.likes {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 .like__button {
     width: 40px;
     height: 40px;
+}
+
+.item__comment {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 .comment__button {
