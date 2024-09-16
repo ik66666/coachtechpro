@@ -227,18 +227,18 @@ DB_PORT=3306
 DB_DATABASE=demo_test
 DB_USERNAME=root
 DB_PASSWORD=root
+
+```
+
+下記環境変数を参照し自動テスト用に.env.exampleファイルを修正
+```
 // 中略
-MAIL_MAILER=smtp
-MAIL_HOST=mailhog
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=test@test.com
-MAIL_FROM_NAME="${APP_NAME}"
-// 中略
-STRIPE_KEY="所有するStripeアカウントの公開可能キー"
-STRIPE_SECRET="所有するStripeアカウントのシークレットキー"
+DB_CONNECTION=mysql_test
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=demo_test
+DB_USERNAME=root
+DB_PASSWORD=root
 
 ```
 
