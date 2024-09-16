@@ -296,6 +296,7 @@ app/Providers/RouteServiceProvider.phpの HOME を修正
 ```
 - public const HOME = '/dashboard';
 + public const HOME = '/';
++ public const ADMIN_HOME = '/admin';
 
 ```
 PHPコンテナ内で日本語ファイルをインストール
