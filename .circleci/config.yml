@@ -6,10 +6,9 @@ jobs:
       - image: circleci/php:7.4
       - image: circleci/mysql:8.0
         environment:
-          DB_HOST: 127.0.0.1
-          DB_CONNECTION: circle_test
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_ROOT_PASSWORD: ""
+          DB_HOST: mysql
+          DB_CONNECTION: mysql
+          MYSQL_ROOT_PASSWORD: root
           LARAVEL_BYPASS_ENV_CHECK: 1
     steps:
       - checkout
