@@ -6,13 +6,18 @@ jobs:
       - image: circleci/php:7.4
       - image: circleci/mysql:8.0
         environment:
-          DB_HOST: 127.0.0.1
-          DB_CONNECTION: circle_test
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_ROOT_PASSWORD: ""
+          DB_HOST: mysql
+          DB_CONNECTION: mysql
+          MYSQL_ROOT_PASSWORD: root
           LARAVEL_BYPASS_ENV_CHECK: 1
     steps:
       - checkout
+
+      - run:
+          name: Install MySQL client
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y default-mysql-client
 
       - run:
           name: Install dependencies
@@ -25,7 +30,20 @@ jobs:
           name: Set up environment
           command: |
             cd ./src
-            cp .env.testing .env
+            cp .env.example .env.testing
+
+      - run:
+          name: Generate application key
+          command: |
+            cd ./src
+            php artisan key:generate --env=testing
+
+
+      - run:
+          name: Create test database
+          command: |
+            mysql -u root -proot -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS demo_test;"
+
       - run:
           name: Clear cache
           command: |
@@ -38,4 +56,4 @@ jobs:
           command: |
             cd ./src
             php artisan migrate:fresh --env=testing
-            php ./vendor/bin/phpunit
+            php ./vendor/bin/phpunit --testsuite=Feature
