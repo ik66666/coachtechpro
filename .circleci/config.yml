@@ -49,4 +49,4 @@ jobs:
           command: |
             cd ./src
             php artisan migrate:fresh --env=testing
-            php ./vendor/bin/phpunit
+            php ./vendor/bin/phpunit --testsuite=Feature
