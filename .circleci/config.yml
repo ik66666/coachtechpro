@@ -33,6 +33,13 @@ jobs:
             cp .env.example .env.testing
 
       - run:
+          name: Generate application key
+          command: |
+            cd ./src
+            php artisan key:generate --env=testing
+
+
+      - run:
           name: Create test database
           command: |
             mysql -u root -proot -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS demo_test;"
