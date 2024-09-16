@@ -25,7 +25,7 @@ jobs:
           name: Set up environment
           command: |
             cd ./src
-            cp .env.testing .env
+            cp .env.example .env
       - run:
           name: Clear cache
           command: |
