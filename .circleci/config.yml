@@ -63,6 +63,10 @@ jobs:
     steps:
       - add_ssh_keys
       - run:
+          name: Install npm
+          command: |
+            ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME} "curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash - && sudo yum install -y nodejs"
+      - run:
           name: Deploy to EC2
           command: |
             ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME} "cd laravel/src && \
