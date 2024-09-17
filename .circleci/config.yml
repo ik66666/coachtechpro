@@ -72,7 +72,8 @@ jobs:
             ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME} "cd laravel/src && \
               git pull origin main && \
               composer install -n --no-dev --prefer-dist && \
-              npm ci && \
+              npm install && \  # package-lock.jsonを生成するために最初に実行
+              npm ci && \        # その後npm ciを実行
               npm run prod && \
               php artisan migrate --force && \
               php artisan config:cache"
