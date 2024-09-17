@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: heroku/php
+  config:
+    APP_ROOT: ./src
