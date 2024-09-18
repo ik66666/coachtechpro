@@ -135,10 +135,10 @@ php artisan key:generate
 このプロジェクトにはFeatureテストが含まれています。Featureテストのみを実行するには、以下のコマンドを使用します。
 
 1. PHPコンテナにログインしFeatureテストの実行
-   ```
+```
    docker-compose exec php bash
    ./vendor/bin/phpunit --testsuite=Feature
-  ```
+```
 
 ## 5. 自動テストとデプロイ
 
