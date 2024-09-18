@@ -18,165 +18,53 @@ coachtechブランドのアイテムを出品する
 - ER図
 - https://docs.google.com/spreadsheets/d/1TBjWt6wV2KDjiLHLZxxmBXTdWIpoOQOtQF-MfLJrZPo/edit?usp=sharing
 
+#### 4. 使用技術
+
+このプロジェクトでは、以下の技術スタックを使用しています。
+
+- **Webサーバ**: Nginx (バージョン 1.21.1)
+  - 使用ポート: 80
+  - 設定ファイル: `./docker/nginx/default.conf`
+  
+- **アプリケーション**: PHP
+  - 使用イメージ: カスタムビルド (`./docker/php`)
+  - コードベース: `./src`ディレクトリ
+  
+- **データベース**: MySQL (バージョン 8.0.30)
+  - データベース名: `laravel_db`
+  - ユーザー: `laravel_user`
+  - パスワード: `laravel_pass`
+  - ボリューム: `./docker/mysql/data` (データ保存先)
+  - 設定ファイル: `./docker/mysql/my.cnf`
+  
+- **データベース管理ツール**: phpMyAdmin
+  - 使用ポート: 8080
+  - ホスト: MySQLコンテナ (`mysql`)
+  - 認証情報: `laravel_user` / `laravel_pass`
+  
+- **メールサーバ**: Mailhog
+  - 使用ポート: 8025
+  - メール保存: `maildir`
+  - ボリューム: `/tmp` (メール保存先)
+
+- **AWS CloudFormation**: EC2インスタンスやVPCの作成に使用
+  - AMI ID: `ami-06aa91d03bbe9eed7` (Amazon Linux 2)
+  - インスタンスタイプ: `t2.micro`（デフォルト）
+  - SSHアクセス: EC2 KeyPair `laravel-ci-ec2-user`
+  - VPCおよびサブネット: `172.18.0.0/16` (VPC CIDR)
+  - セキュリティグループ: ポート `22`, `80`, `443` 開放
+
+
 ## 2.開発環境構築方法
 
-#### 1. Docker  のインストール
-※Windows（Linux環境）での開発を想定してます。
- docker desktopを下記リンクよりインストールしてください。
-- https://www.docker.com/products/docker-desktop/
-- インストール方法は公式ドキュメントを参照してください。
-
-#### 2.ディレクトリの作成
-
-任意のディレクトリに下記構成のディレクトリを作成
+#### 1.リポジトリのクローン
+リポジトリをクローンします。
 ```
-.
-├── docker
-│   ├── mysql
-│   │   ├── data
-│   │   └── my.cnf
-│   ├── nginx
-│   │   └── default.conf
-│   └── php
-│       ├── Dockerfile
-│       └── php.ini
-├── docker-compose.yml
-└── src
-```
-#### 3. Docker Compose ファイルの設定
-
-```
-version: '3.8'
-
-volumes:
-    maildir: {}
-
-services:
-    nginx:
-        image: nginx:1.21.1
-        ports:
-            - "80:80"
-        volumes:
-            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-            - ./src:/var/www/
-        depends_on:
-            - php
-
-    php:
-        build: ./docker/php
-        volumes:
-            - ./src:/var/www/
-
-    mysql:
-        image: mysql:8.0.30
-        environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: laravel_db
-            MYSQL_USER: laravel_user
-            MYSQL_PASSWORD: laravel_pass
-        command:
-            mysqld --default-authentication-plugin=mysql_native_password
-        volumes:
-            - ./docker/mysql/data:/var/lib/mysql
-            - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        environment:
-            - PMA_ARBITRARY=1
-            - PMA_HOST=mysql
-            - PMA_USER=laravel_user
-            - PMA_PASSWORD=laravel_pass
-        depends_on:
-            - mysql
-        ports:
-            - 8080:80
-
-    mail:
-        image: mailhog/mailhog
-        container_name: mailhog
-        ports:
-            - "8025:8025"
-        environment:
-            MH_STORAGE: maildir
-            MH_MAILDIR_PATH: /tmp
-        volumes:
-            - maildir:/tmp
-
+git clone git@github.com:ik66666/coachtechpro.git
+cd [プロジェクト名]
 ```
 
-#### 4.Nginx の設定
-
-./docker/nginx/conf.d/default.conf を作成し、以下の内容を追加します。
-
-```
-server {
-    listen 80;
-    index index.php index.html;
-    server_name localhost;
-
-    root /var/www/public;
-
-    location / {
-        try_files $uri $uri/ /index.php$is_args$args;
-    }
-
-    location ~ \.php$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass php:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-    }
-}
-```
-
-#### 5.PHPの設定
-./docker/phpに作成されたDockerfileに以下内容を追加
-
-```
-FROM php:7.4.9-fpm
-
-COPY php.ini /usr/local/etc/php/
-
-RUN apt update \
-    && apt install -y default-mysql-client zlib1g-dev libzip-dev unzip \
-    && docker-php-ext-install pdo_mysql zip
-
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer \
-    && composer self-update
-
-WORKDIR /var/www
-
-```
-
-docker/php以下のphp.iniファイルに以下内容を追加
-
-```
-date.timezone = "Asia/Tokyo"
-
-[mbstring]
-mbstring.internal_encoding = "UTF-8"
-mbstring.language = "Japanese"
-```
-
-#### 6.MySQLの設定
-
-docker/mysql以下のmy.cnfファイルに以下内容を追加
-
-```
-[mysqld]
-character-set-server = utf8mb4
-
-collation-server = utf8mb4_unicode_ci
-
-default-time-zone = 'Asia/Tokyo'
-```
-※dataフォルダは必ず空にしておく
-
-#### 7.docker-compose コマンドでビルド
+#### 2.docker-compose コマンドでビルド
 
 以下のコマンドで開発環境を構築
 ```
@@ -185,15 +73,17 @@ docker-compose up -d --build
 ```
 PHP、MySQL、Nginx、PHPMyAdmin、mailhogが起動すれば成功
 
-#### 8.laravelプロジェクトの作成
+#### 3.依存パッケージのインストール
 
-PHPコンテナにログインし、以下のコマンドでプロジェクトを作成
+PHPコンテナにログインし、以下のコマンドでパッケージをインストール
 
 ```
 docker-compose exec php bash
-composer create-project "laravel/laravel=8.*" . --prefer-dist
+composer install
+
 ```
-#### .envファイルの設定
+
+## 3.envファイルの設定
 
 下記環境変数を参照して.envファイルを作成
 ```
@@ -218,24 +108,7 @@ STRIPE_KEY="所有するStripeアカウントの公開可能キー"
 STRIPE_SECRET="所有するStripeアカウントのシークレットキー"
 
 ```
-下記環境変数を参照しテスト用の.env.testingファイルを作成
-```
-APP_NAME=Laravel
-APP_ENV=test
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost
-// 中略
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=demo_test
-DB_USERNAME=root
-DB_PASSWORD=root
-
-```
-
-下記環境変数を参照し自動テスト用に.env.exampleファイルを修正
+テスト用の.env.testingファイルと自動テスト用の.env.exampleファイルも適宜作成・修正してください
 ```
 APP_NAME=Laravel
 APP_ENV=test
@@ -251,6 +124,39 @@ DB_USERNAME=root
 DB_PASSWORD=root
 
 ```
+各ファイルのアプリケーションキーの生成
+```
+php artisan key:generate
+
+```
+
+## 4. テスト方法
+
+このプロジェクトにはFeatureテストが含まれています。Featureテストのみを実行するには、以下のコマンドを使用します。
+
+1. PHPコンテナにログインしFeatureテストの実行
+   ```
+   docker-compose exec php bash
+   ./vendor/bin/phpunit --testsuite=Feature
+  ```
+
+## 5. 自動テストとデプロイ
+
+### 5.1. 自動テスト
+このプロジェクトでは、CircleCIを使用してプッシュ時に自動でテストが実行されます。
+
+1. プロジェクトに変更を加えた後、リポジトリにプッシュすると、自動的にCircleCIが起動し、テストが実行されます。
+2. CircleCIの設定は、`.circleci/config.yml`ファイルに記載されています。
+3. 成功した場合、テスト結果はCircleCIのダッシュボードから確認できます。
+
+### 5.2. 自動デプロイ
+CircleCIを使用して、AWS EC2に自動でデプロイが行われます。
+
+1. `main`ブランチにマージすると、CircleCIがトリガーされ、自動的にデプロイが開始されます。
+2. AWS EC2インスタンスには、CloudFormationを使用して構築された環境にデプロイされます。
+3. デプロイの詳細は、CircleCIのログまたはAWS管理コンソールで確認できます。
+
+環境設定や手動でのデプロイが必要な場合は、`.circleci/config.yml`を参照してください。
 
 
 ## その他特記事項
@@ -259,9 +165,11 @@ DB_PASSWORD=root
 PHPコンテナ内にてfortifyをインストールし、マイグレーションの作成
 
 ```
+docker-compose exec php bash
 composer require laravel/fortify
 php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 php artisan migrate
+
 ```
 app.phpの修正
 config/app.phpファイルの以下２点を編集
@@ -302,7 +210,7 @@ public function boot(): void
     }
 ```
 app/Providers/RouteServiceProvider.phpの HOME を修正
-
+/adminは管理者画面用、
 ```
 - public const HOME = '/dashboard';
 + public const HOME = '/';
