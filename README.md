@@ -210,7 +210,8 @@ public function boot(): void
     }
 ```
 app/Providers/RouteServiceProvider.phpの HOME を修正
-/adminは管理者画面用、
+/adminは管理者画面用、管理者用ユーザー情報はadmin_usersテーブルの
+マイグレーションファイルに記載してます。
 ```
 - public const HOME = '/dashboard';
 + public const HOME = '/';
