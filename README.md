@@ -1,5 +1,7 @@
 ## 1.プロダクト概要
 
+![トップ画面](https://github.com/user-attachments/assets/9d012bab-3e1a-4a45-a438-08f3a69dba89)
+
 #### 1.プロダクト名
 
 coachtechフリマ
